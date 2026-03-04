@@ -2,115 +2,332 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Cyber Card Concept</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tim948 | Go Backend Architect</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg-color: #050505;
-            --card-bg: rgba(20, 20, 25, 0.7);
-            --neon-cyan: #00f2ff;
-            --neon-purple: #bc13fe;
+            /* Яркая креативная киберпанк палитра */
+            --bg-deep: #030005; /* Почти черный, фиолетовый отлив */
+            --bg-card: rgba(10, 5, 20, 0.85); /* Стеклянная база */
+            
+            --neon-pink: #ff0055; /* Акцент 1: Токсичный розовый */
+            --neon-blue: #00f2ff; /* Акцент 2: Электрический синий */
+            --neon-green: #0ff04e; /* Акцент 3: Кибер-зеленый (для Go/Ok) */
+            
             --text-main: #e0e0e0;
+            --text-muted: #888;
+            
+            --font-header: 'Orbitron', sans-serif; /* Для заголовков/ников */
+            --font-code: 'Share Tech Mono', monospace; /* Для кода и статусов */
+            --font-body: 'Rajdhani', sans-serif; /* Для основного текста */
         }
 
-        body {
+        /* --- Базовая настройка сцены --- */
+        body, html {
             margin: 0;
+            padding: 0;
+            width: 100%;
             height: 100vh;
+            overflow: hidden; /* Скрываем полосы прокрутки, используем flex */
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: var(--font-body);
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: var(--bg-color);
-            /* Фоновая сетка как в Троне */
-            background-image: 
-                linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90px, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            overflow: hidden;
         }
 
-        .cyber-card {
+        /* Фишка 1: Живой задний план "Matrix Matrix Rain" 
+           Я создал CSS-анимацию "дождя" из символов.
+        */
+        body::before {
+            content: "GO.lang > DATA.flow > SQL_QUERY > MONGODB.connect > DOCKER.init > KUBERNETES.deploy > gRPC.call > KAFKA.produce > REDIS.set > 01010101 > system.exec > ";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            font-family: var(--font-code);
+            font-size: 14px;
+            color: rgba(0, 242, 255, 0.03); /* Очень тусклый неон синий */
+            white-space: nowrap;
+            animation: rain 20s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes rain {
+            from { transform: translateY(-50%); }
+            to { transform: translateY(0%); }
+        }
+
+        /* --- Центральная кибер-карточка --- */
+        .cyber-profile {
             position: relative;
-            width: 350px;
-            padding: 40px;
-            background: var(--card-bg);
-            border-radius: 20px;
-            /* Эффект матового стекла */
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(0, 242, 255, 0.2);
+            z-index: 10;
+            width: 90%;
+            max-width: 480px;
+            background: var(--bg-card);
+            border: 2px solid var(--neon-blue);
+            border-radius: 12px;
+            padding: 30px;
             text-align: center;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-            transition: 0.4s ease;
+            
+            /* Эффекты: Glow + Стеклянный блур */
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2), inset 0 0 15px rgba(0, 242, 255, 0.1);
+            
+            /* Анимация плавного появления */
+            opacity: 0;
+            transform: translateY(20px);
+            animation: emerge 1s ease-out forwards;
         }
 
-        .cyber-card:hover {
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 40px rgba(0, 242, 255, 0.15);
-            transform: translateY(-5px);
+        @keyframes emerge {
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Светящийся аватар */
-        .profile-img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 2px solid var(--neon-cyan);
-            box-shadow: 0 0 15px var(--neon-cyan);
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-size: 1.5rem;
-            margin: 10px 0;
-            text-shadow: 0 0 10px var(--neon-cyan);
-        }
-
-        .status {
-            font-size: 0.8rem;
-            color: var(--neon-purple);
-            text-transform: uppercase;
-            font-weight: bold;
-            letter-spacing: 2px;
-            margin-bottom: 25px;
-            display: block;
-        }
-
-        .btn {
-            display: block;
-            padding: 12px;
-            margin: 10px 0;
-            color: var(--neon-cyan);
-            text-decoration: none;
-            border: 1px solid var(--neon-cyan);
-            border-radius: 5px;
-            font-size: 0.9rem;
-            transition: 0.3s;
-            background: transparent;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn:hover {
-            background: rgba(0, 242, 255, 0.1);
-            box-shadow: inset 0 0 15px rgba(0, 242, 255, 0.2), 0 0 15px rgba(0, 242, 255, 0.2);
-            text-shadow: 0 0 5px var(--neon-cyan);
-        }
-
-        /* Декоративный уголок */
-        .cyber-card::before {
+        /* Декоративный уголок киберпанка */
+        .cyber-profile::after {
             content: '';
             position: absolute;
-            top: 0; right: 0;
-            width: 40px; height: 40px;
-            background: var(--neon-cyan);
-            clip-path: polygon(100% 0, 0 0, 100% 100%);
-            opacity: 0.5;
-            border-radius: 0 20px 0 0;
+            top: -2px; left: -2px;
+            width: 50px; height: 50px;
+            border-top: 4px solid var(--neon-pink);
+            border-left: 4px solid var(--neon-pink);
+            border-radius: 12px 0 0 0;
+            filter: drop-shadow(0 0 5px var(--neon-pink));
         }
+
+        /* --- Аватар --- */
+        .avatar-wrapper {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 20px;
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--text-main);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .avatar-wrapper:hover .avatar {
+            transform: scale(1.05) rotate(3deg);
+        }
+
+        /* Вращающееся кольцо вокруг аватара */
+        .avatar-ring {
+            position: absolute;
+            top: -10px; left: -10px; right: -10px; bottom: -10px;
+            border: 2px dashed var(--neon-blue);
+            border-radius: 50%;
+            animation: rotate-ring 10s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes rotate-ring {
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- Заголовки (Имя/Ник) --- */
+        h1.name {
+            font-family: var(--font-header);
+            font-size: 2.2rem;
+            margin: 0;
+            background: linear-gradient(135deg, var(--text-main) 30%, var(--neon-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+            letter-spacing: 1px;
+        }
+
+        .nickname {
+            font-family: var(--font-code);
+            color: var(--neon-pink);
+            font-size: 1.1rem;
+            margin-top: -5px;
+            display: block;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        /* --- Био (Инфо) --- */
+        .bio {
+            font-family: var(--font-code);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            text-align: left;
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-left: 2px solid var(--neon-green);
+        }
+
+        .status-ok {
+            color: var(--neon-green);
+            font-weight: bold;
+        }
+
+        /* --- Стек Технологий (Chips) --- */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .skill-chip {
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            padding: 6px 12px;
+            background: rgba(0, 242, 255, 0.05);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            border-radius: 4px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-chip:hover {
+            background: var(--neon-blue);
+            color: var(--bg-deep);
+            box-shadow: 0 0 15px var(--neon-blue);
+            font-weight: bold;
+            transform: translateY(-2px);
+        }
+
+        /* Для C# сделаем акцент розовым */
+        .skill-chip.csharp {
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+            background: rgba(255, 0, 85, 0.05);
+        }
+        .skill-chip.csharp:hover {
+            background: var(--neon-pink);
+            color: white;
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+
+        /* --- Ссылки (Кнопки) --- */
+        .links-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .cyber-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-header);
+            font-size: 0.9rem;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 6px;
+            transition: all 0.4s ease;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        /* Стилизация ВК и Телеграм */
+        .btn-vk {
+            color: #0077ff;
+            background: rgba(0, 119, 255, 0.1);
+            border: 1px solid #0077ff;
+        }
+        .btn-vk:hover {
+            background: #0077ff;
+            color: white;
+            box-shadow: 0 0 20px rgba(0, 119, 255, 0.5);
+        }
+
+        .btn-tg {
+            color: var(--neon-blue);
+            background: rgba(0, 242, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+        }
+        .btn-tg:hover {
+            background: var(--neon-blue);
+            color: var(--bg-deep);
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        /* LinkedIn на всю ширину */
+        .btn-li {
+            grid-column: span 2;
+            color: #00a0dc;
+            background: rgba(0, 160, 220, 0.1);
+            border: 1px solid #00a0dc;
+        }
+        .btn-li:hover {
+            background: #00a0dc;
+            color: white;
+            box-shadow: 0 0 20px rgba(0, 160, 220, 0.5);
+        }
+
+        /* Фишка: Блик при наведении на кнопку */
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+        .cyber-btn:hover::before {
+            left: 100%;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="cyber-card">
+    <div class="cyber-profile">
+        <div class="avatar-wrapper">
+            <div class="avatar-ring"></div>
+            <img src="https://api.dicebear.com/8.x/bottts-neutral/svg?seed=Tim948&backgroundColor=0a5b83,679f71,f8961e" alt="Данил Яманаев" class="avatar">
+        </div>
+
+        <h1 class="name">Данил Яманаев</h1>
+        <span class="nickname">// net.runner: Tim948</span>
+
+        <div class="bio">
+            > root@Tim948:~# whoami<br>
+            [ROLE]: Go Backend Architect<br>
+            [EDU]: Магистратура УГНТУ (07.2026г.)<br>
+            [STATUS]: System.init... <span class="status-ok">OK</span>
+        </div>
+
+        <div class="skills-container">
+            <span class="skill-chip">Go</span>
+            <span class="skill-chip">Goland</span>
+            <span class="skill-chip csharp">C#</span>
+            <span class="skill-chip">PostgreSQL</span>
+            <span class="skill-chip">Redis</span>
+            <span class="skill-chip">Kafka</span>
+            <span class="skill-chip">Docker</span>
+            <span class="skill-chip">Kubernetes</span>
+            <span class="skill-chip">MongoDB</span>
+            <span class="skill-chip">gRPC</span>
+        </div>
+
+        <div class="links-container">
+            <a href="#" class="cyber-btn btn-vk" target="_blank">VK.com</a>
+            <a href="#" class="cyber-btn btn-tg" target="_blank">Telegram</a>
+            <a href="#" class="cyber-btn btn-li" target="_blank">LinkedIn</a>
+        </div>
+    </div>
+
+</body>
+</html>
