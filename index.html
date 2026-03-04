@@ -3,281 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tim948 | Go Backend Developer</title>
-    
+    <title>Tim948 // Steam Profile Style</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
-
     <style>
         :root {
-            --bg-deep: #020004;
-            --bg-card: rgba(10, 5, 25, 0.85);
+            --bg-deep: #0b0e14;
+            --steam-blue: #1b2838;
+            --steam-gradient: linear-gradient(to bottom, #213145 0%, #1b2838 100%);
+            --neon-blue: #66c0f4; /* Классический голубой Steam */
             --neon-pink: #ff0055;
-            --neon-blue: #00f2ff;
-            --neon-green: #0ff04e;
-            --text-main: #ffffff;
-            --text-muted: #a0a0a0;
-            --font-header: 'Orbitron', sans-serif;
+            --text-gold: #c7d5e0;
+            --font-main: 'Rajdhani', sans-serif;
             --font-code: 'Share Tech Mono', monospace;
-            --font-body: 'Rajdhani', sans-serif;
         }
 
-        /* Обнуление и фиксация центрирования */
         * { box-sizing: border-box; }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
+            margin: 0; padding: 0;
+            width: 100%; height: 100vh;
             background-color: var(--bg-deep);
-            color: var(--text-main);
-            font-family: var(--font-body);
-            /* Жесткое центрирование контента */
+            color: var(--text-gold);
+            font-family: var(--font-main);
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
         }
 
-        /* ФОН: Абсолютное позиционирование, чтобы не влиять на центрирование карточки */
         #matrixCanvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1; /* Самый нижний слой */
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            opacity: 0.3;
         }
 
-        /* КАРТОЧКА ПРОФИЛЯ */
-        .cyber-profile {
+        /* ОСНОВНОЙ КОНТЕЙНЕР (СТИЛЬ СТИМА) */
+        .steam-container {
             position: relative;
-            z-index: 10; /* Слой выше фона */
-            width: 95%;
-            max-width: 480px;
-            background: var(--bg-card);
-            border: 1px solid rgba(0, 242, 255, 0.3);
-            border-radius: 15px;
-            padding: 35px;
-            text-align: center;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(0, 242, 255, 0.05);
-            animation: fadeIn 1s ease-out;
+            z-index: 10;
+            width: 90%;
+            max-width: 900px; /* Широкая карточка */
+            background: var(--steam-gradient);
+            border: 1px solid rgba(102, 192, 244, 0.2);
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            display: flex;
+            flex-wrap: wrap; /* Для мобильных */
+            padding: 30px;
+            gap: 30px;
+            animation: slideUp 0.8s ease-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Сканирующая полоса сверху вниз */
-        .cyber-profile::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 2px;
-            background: var(--neon-blue);
-            box-shadow: 0 0 15px var(--neon-blue);
-            animation: scan 6s linear infinite;
-            opacity: 0.5;
+        /* ЛЕВАЯ КОЛОНКА */
+        .left-col {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            padding-right: 20px;
         }
 
-        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
-
-        /* Аватар */
-        .avatar-box {
-            position: relative;
-            width: 110px;
-            height: 110px;
+        .avatar-frame {
+            width: 180px;
+            height: 180px;
             margin: 0 auto 20px;
+            padding: 5px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+            position: relative;
         }
 
         .avatar {
             width: 100%;
             height: 100%;
-            border-radius: 50%;
-            border: 2px solid var(--neon-blue);
-            padding: 4px;
+            background: #101822;
             object-fit: cover;
-            filter: drop-shadow(0 0 8px var(--neon-blue));
-            transition: 0.4s;
-        }
-        
-        .avatar:hover { transform: rotate(5deg) scale(1.05); }
-
-        /* Текст */
-        .name {
-            font-family: var(--font-header);
-            font-size: 1.8rem;
-            margin: 0;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #fff;
-        }
-
-        .nickname {
-            font-family: var(--font-code);
-            color: var(--neon-pink);
-            font-size: 1.1rem;
             display: block;
-            margin-bottom: 20px;
-            text-shadow: 0 0 5px var(--neon-pink);
         }
 
-        .bio-box {
-            background: rgba(0, 0, 0, 0.4);
-            border-left: 3px solid var(--neon-green);
-            padding: 12px;
-            text-align: left;
+        .online-status {
+            color: #90ba3c;
             font-family: var(--font-code);
-            font-size: 0.85rem;
-            margin-bottom: 25px;
-            line-height: 1.4;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(144, 186, 60, 0.5);
         }
 
-        /* Скиллы */
-        .skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            justify-content: center;
+        /* ПРАВАЯ КОЛОНКА */
+        .right-col {
+            flex: 2;
+            min-width: 300px;
+            text-align: left;
+        }
+
+        h1.user-name {
+            font-family: var(--font-header);
+            font-size: 2.4rem;
+            margin: 0;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .location {
+            color: #898989;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .summary {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            font-size: 1.1rem;
+            border-left: 4px solid var(--neon-blue);
+        }
+
+        .section-title {
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* СЕТКА ТЕХНОЛОГИЙ */
+        .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
             margin-bottom: 30px;
         }
 
-        .skill {
-            padding: 3px 8px;
-            border: 1px solid rgba(0, 242, 255, 0.4);
+        .skill-item {
+            background: rgba(102, 192, 244, 0.05);
+            border: 1px solid rgba(102, 192, 244, 0.2);
+            padding: 8px;
             font-family: var(--font-code);
-            font-size: 0.7rem;
-            border-radius: 4px;
-            color: var(--neon-blue);
-            transition: 0.3s;
-        }
-
-        .skill:hover {
-            background: var(--neon-blue);
-            color: #000;
-            box-shadow: 0 0 12px var(--neon-blue);
-        }
-
-        /* Кнопки */
-        .links {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .btn {
-            text-decoration: none;
-            padding: 10px;
-            font-family: var(--font-header);
-            font-size: 0.75rem;
-            border-radius: 4px;
-            transition: 0.3s;
+            font-size: 0.8rem;
             text-align: center;
-            border: 1px solid;
-            font-weight: bold;
+            transition: 0.3s;
         }
 
-        .btn-tg { color: var(--neon-blue); border-color: var(--neon-blue); }
-        .btn-tg:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 15px var(--neon-blue); }
+        .skill-item:hover {
+            border-color: var(--neon-blue);
+            background: rgba(102, 192, 244, 0.2);
+            color: #fff;
+        }
 
-        .btn-vk { color: #4C75A3; border-color: #4C75A3; }
-        .btn-vk:hover { background: #4C75A3; color: #fff; box-shadow: 0 0 15px #4C75A3; }
+        /* КНОПКИ */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-        .btn-li { grid-column: span 2; color: var(--neon-pink); border-color: var(--neon-pink); }
-        .btn-li:hover { background: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink); }
+        .steam-btn {
+            background: #3a3a3a;
+            color: #ebebeb;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 2px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            border-bottom: 2px solid rgba(0,0,0,0.3);
+        }
 
+        .steam-btn:hover {
+            background: #4a4a4a;
+            color: #fff;
+        }
+
+        .btn-primary {
+            background: linear-gradient( to right, #47bfff 5%, #1a44c2 95%);
+        }
+        .btn-primary:hover { background: linear-gradient( to right, #57cfff 5%, #2a54d2 95%); }
+
+        @media (max-width: 768px) {
+            .steam-container { flex-direction: column; height: 90vh; overflow-y: auto; }
+            .left-col { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 20px; }
+            body { align-items: flex-start; padding-top: 20px; }
+        }
     </style>
 </head>
 <body>
 
     <canvas id="matrixCanvas"></canvas>
 
-    <div class="cyber-profile">
-        <div class="avatar-box">
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Tim948&baseColor=00f2ff" alt="Avatar" class="avatar">
+    <div class="steam-container">
+        <div class="left-col">
+            <div class="avatar-frame">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Tim948&baseColor=66c0f4" alt="Tim948" class="avatar">
+            </div>
+            <div class="online-status">В сети (Go Developer)</div>
+            
+            <div class="button-group">
+                <a href="https://t.me/ElegantCoderByte" class="steam-btn btn-primary" target="_blank">Отправить сообщение</a>
+                <a href="https://vk.ru/ne_ydachi" class="steam-btn" target="_blank">Профиль VK</a>
+                <a href="#" class="steam-btn" target="_blank">LinkedIn</a>
+            </div>
         </div>
 
-        <h1 class="name">Данил Яманаев</h1>
-        <span class="nickname">Tim948 // BACKEND</span>
+        <div class="right-col">
+            <h1 class="user-name">Данил Яманаев</h1>
+            <span class="location">Уфа, Россия &nbsp;|&nbsp; Tim948</span>
 
-        <div class="bio-box">
-            > [ROLE]: Go Developer<br>
-            > [EDU]: Магистратура УГНТУ (2026)<br>
-            > [STATUS]: <span style="color:var(--neon-green)">ONLINE</span>
-        </div>
+            <span class="section-title">О себе</span>
+            <div class="summary">
+                Привет! Я Backend-разработчик на <b>Go</b>. 
+                В данный момент повышаю квалификацию в магистратуре <b>УГНТУ</b> (направление: Информатика и вычислительная техника). 
+                Планируемая дата выпуска: <b>07.2026г.</b><br>
+                Специализируюсь на создании масштабируемых микросервисов, работе с базами данных и высоконагруженных системах.
+            </div>
 
-        <div class="skills">
-            <span class="skill">Go</span>
-            <span class="skill">C#</span>
-            <span class="skill">PostgreSQL</span>
-            <span class="skill">Redis</span>
-            <span class="skill">Kafka</span>
-            <span class="skill">gRPC</span>
-            <span class="skill">Docker</span>
-            <span class="skill">MongoDB</span>
-        </div>
+            <span class="section-title">Технологический стек</span>
+            <div class="skill-grid">
+                <div class="skill-item">Golang</div>
+                <div class="skill-item">C# / .NET</div>
+                <div class="skill-item">PostgreSQL</div>
+                <div class="skill-item">MySQL</div>
+                <div class="skill-item">MongoDB</div>
+                <div class="skill-item">Redis</div>
+                <div class="skill-item">gRPC</div>
+                <div class="skill-item">Kafka</div>
+                <div class="skill-item">Docker</div>
+                <div class="skill-item">Gin / Fiber</div>
+            </div>
 
-        <div class="links">
-            <a href="https://t.me/ElegantCoderByte" class="btn btn-tg" target="_blank">TELEGRAM</a>
-            <a href="https://vk.ru/ne_ydachi" class="btn btn-vk" target="_blank">VK.COM</a>
-            <a href="#" class="btn btn-li" target="_blank">LINKEDIN (NOT SET)</a>
+            <span class="section-title">Текущий статус</span>
+            <div style="font-family: var(--font-code); color: var(--neon-blue); font-size: 0.9rem;">
+                > Loading Master's Degree... 75% [||||||||--]<br>
+                > Primary Language: Golang<br>
+                > Secondary: C# (Unity/Backend)
+            </div>
         </div>
     </div>
 
     <script>
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        // Установка размеров
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        const codeSnippets = [
-            "go func()", "chan int", "defer db.Close()", "SELECT * FROM", 
-            "01", "10", "err != nil", "gRPC.v3", "docker-compose", 
-            "interface{}", "struct {", "kafka.Join()", "redis.Get()"
-        ];
-
-        const fontSize = 14;
-        const columns = Math.floor(canvas.width / 100); // Реже колонки для красоты
-        const drops = [];
-
-        for (let x = 0; x < columns; x++) {
-            drops[x] = Math.random() * -100;
-        }
+        const code = ["go", "sql", "gin", "grpc", "buf", "01"];
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
 
         function draw() {
-            // Полупрозрачный черный для эффекта "шлейфа"
-            ctx.fillStyle = 'rgba(2, 0, 4, 0.15)';
+            ctx.fillStyle = 'rgba(11, 14, 20, 0.1)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = '#00f2ff22'; // Очень прозрачный синий неон
-            ctx.font = fontSize + 'px "Share Tech Mono"';
-
+            ctx.fillStyle = '#66c0f433';
+            ctx.font = fontSize + 'px monospace';
             for (let i = 0; i < drops.length; i++) {
-                const text = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
-                
-                // Рандомные координаты для разброса
-                const x = i * (canvas.width / columns);
-                const y = drops[i] * fontSize;
-
-                ctx.fillText(text, x, y);
-
-                if (y > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i] += 0.5; // Скорость падения
+                const text = code[Math.floor(Math.random() * code.length)];
+                ctx.fillText(text, i * fontSize * 3, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
             }
-            requestAnimationFrame(draw);
         }
-
-        draw();
+        setInterval(draw, 50);
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
     </script>
 </body>
 </html>
