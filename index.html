@@ -10,7 +10,7 @@
     <style>
         :root {
             --bg-deep: #020004;
-            --bg-card: rgba(10, 5, 25, 0.8);
+            --bg-card: rgba(10, 5, 25, 0.85);
             --neon-pink: #ff0055;
             --neon-blue: #00f2ff;
             --neon-green: #0ff04e;
@@ -21,52 +21,65 @@
             --font-body: 'Rajdhani', sans-serif;
         }
 
+        /* Обнуление и фиксация центрирования */
+        * { box-sizing: border-box; }
+
         body, html {
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
             background-color: var(--bg-deep);
             color: var(--text-main);
             font-family: var(--font-body);
+            /* Жесткое центрирование контента */
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
         }
 
-        /* --- ФОН: ДИНАМИЧЕСКИЙ КИБЕР-КОД --- */
-        #canvas-container {
+        /* ФОН: Абсолютное позиционирование, чтобы не влиять на центрирование карточки */
+        #matrixCanvas {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Самый нижний слой */
         }
 
-        /* --- КАРТОЧКА ПРОФИЛЯ --- */
+        /* КАРТОЧКА ПРОФИЛЯ */
         .cyber-profile {
             position: relative;
-            z-index: 10;
-            width: 90%;
-            max-width: 500px;
+            z-index: 10; /* Слой выше фона */
+            width: 95%;
+            max-width: 480px;
             background: var(--bg-card);
             border: 1px solid rgba(0, 242, 255, 0.3);
             border-radius: 15px;
-            padding: 40px;
+            padding: 35px;
             text-align: center;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 242, 255, 0.05);
-            animation: fadeIn 1.5s ease-out;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(0, 242, 255, 0.05);
+            animation: fadeIn 1s ease-out;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        /* Декор: Сканирующая полоса */
+        /* Сканирующая полоса сверху вниз */
         .cyber-profile::before {
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 2px;
             background: var(--neon-blue);
             box-shadow: 0 0 15px var(--neon-blue);
-            animation: scan 4s linear infinite;
+            animation: scan 6s linear infinite;
+            opacity: 0.5;
         }
 
         @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
@@ -74,107 +87,106 @@
         /* Аватар */
         .avatar-box {
             position: relative;
-            width: 120px; height: 120px;
-            margin: 0 auto 25px;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 20px;
         }
 
         .avatar {
-            width: 100%; height: 100%;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             border: 2px solid var(--neon-blue);
-            padding: 5px;
+            padding: 4px;
             object-fit: cover;
-            filter: drop-shadow(0 0 10px var(--neon-blue));
+            filter: drop-shadow(0 0 8px var(--neon-blue));
+            transition: 0.4s;
         }
+        
+        .avatar:hover { transform: rotate(5deg) scale(1.05); }
 
-        /* Текстовые блоки */
+        /* Текст */
         .name {
             font-family: var(--font-header);
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin: 0;
             letter-spacing: 2px;
             text-transform: uppercase;
+            color: #fff;
         }
 
         .nickname {
             font-family: var(--font-code);
             color: var(--neon-pink);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             display: block;
             margin-bottom: 20px;
-            animation: glitch 3s infinite;
-        }
-
-        @keyframes glitch {
-            0% { text-shadow: 2px 0 var(--neon-blue), -2px 0 var(--neon-pink); }
-            5% { text-shadow: -2px 0 var(--neon-blue), 2px 0 var(--neon-pink); }
-            10% { text-shadow: 0 0 0; }
+            text-shadow: 0 0 5px var(--neon-pink);
         }
 
         .bio-box {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.4);
             border-left: 3px solid var(--neon-green);
-            padding: 15px;
+            padding: 12px;
             text-align: left;
             font-family: var(--font-code);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-bottom: 25px;
+            line-height: 1.4;
         }
 
-        /* Стек технологий */
+        /* Скиллы */
         .skills {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
             justify-content: center;
             margin-bottom: 30px;
         }
 
         .skill {
-            padding: 4px 10px;
-            border: 1px solid var(--text-muted);
+            padding: 3px 8px;
+            border: 1px solid rgba(0, 242, 255, 0.4);
             font-family: var(--font-code);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             border-radius: 4px;
-            color: var(--text-muted);
+            color: var(--neon-blue);
             transition: 0.3s;
         }
 
         .skill:hover {
-            border-color: var(--neon-blue);
-            color: var(--neon-blue);
-            box-shadow: 0 0 10px var(--neon-blue);
-            transform: translateY(-2px);
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 12px var(--neon-blue);
         }
 
         /* Кнопки */
         .links {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
         }
 
         .btn {
             text-decoration: none;
-            padding: 12px;
+            padding: 10px;
             font-family: var(--font-header);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             border-radius: 4px;
-            transition: 0.4s;
+            transition: 0.3s;
             text-align: center;
             border: 1px solid;
-            position: relative;
-            overflow: hidden;
+            font-weight: bold;
         }
 
         .btn-tg { color: var(--neon-blue); border-color: var(--neon-blue); }
-        .btn-tg:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 20px var(--neon-blue); }
+        .btn-tg:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 15px var(--neon-blue); }
 
         .btn-vk { color: #4C75A3; border-color: #4C75A3; }
-        .btn-vk:hover { background: #4C75A3; color: #fff; box-shadow: 0 0 20px #4C75A3; }
+        .btn-vk:hover { background: #4C75A3; color: #fff; box-shadow: 0 0 15px #4C75A3; }
 
         .btn-li { grid-column: span 2; color: var(--neon-pink); border-color: var(--neon-pink); }
-        .btn-li:hover { background: var(--neon-pink); color: #fff; box-shadow: 0 0 20px var(--neon-pink); }
+        .btn-li:hover { background: var(--neon-pink); color: #fff; box-shadow: 0 0 15px var(--neon-pink); }
 
     </style>
 </head>
@@ -188,80 +200,84 @@
         </div>
 
         <h1 class="name">Данил Яманаев</h1>
-        <span class="nickname">ID: Tim948 // NETRUNNER</span>
+        <span class="nickname">Tim948 // BACKEND</span>
 
         <div class="bio-box">
-            > [ROLE]: Backend Go Developer<br>
-            > [LOC]: УГНТУ, Магистратура (2026)<br>
-            > [STATUS]: <span style="color:var(--neon-green)">READY_TO_DEPLOY</span>
+            > [ROLE]: Go Developer<br>
+            > [EDU]: Магистратура УГНТУ (2026)<br>
+            > [STATUS]: <span style="color:var(--neon-green)">ONLINE</span>
         </div>
 
         <div class="skills">
             <span class="skill">Go</span>
             <span class="skill">C#</span>
             <span class="skill">PostgreSQL</span>
-            <span class="skill">MongoDB</span>
-            <span class="skill">Gin</span>
-            <span class="skill">gRPC</span>
-            <span class="skill">Kafka</span>
             <span class="skill">Redis</span>
+            <span class="skill">Kafka</span>
+            <span class="skill">gRPC</span>
             <span class="skill">Docker</span>
-            <span class="skill">K8s</span>
+            <span class="skill">MongoDB</span>
         </div>
 
         <div class="links">
             <a href="https://t.me/ElegantCoderByte" class="btn btn-tg" target="_blank">TELEGRAM</a>
             <a href="https://vk.ru/ne_ydachi" class="btn btn-vk" target="_blank">VK.COM</a>
-            <a href="#" class="btn btn-li" target="_blank">LINKEDIN (EMPTY)</a>
+            <a href="#" class="btn btn-li" target="_blank">LINKEDIN (NOT SET)</a>
         </div>
     </div>
 
     <script>
-        // Скрипт для создания динамического фона с кодом
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        // Установка размеров
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
         const codeSnippets = [
-            "func main() {", "go func() {", "chan int", "SELECT * FROM", 
-            "db.Connect()", "docker-compose up", "nil != err", 
-            "01", "10", "gRPC.Call", "kafka.Produce", "struct {", "interface{}"
+            "go func()", "chan int", "defer db.Close()", "SELECT * FROM", 
+            "01", "10", "err != nil", "gRPC.v3", "docker-compose", 
+            "interface{}", "struct {", "kafka.Join()", "redis.Get()"
         ];
 
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
+        const fontSize = 14;
+        const columns = Math.floor(canvas.width / 100); // Реже колонки для красоты
         const drops = [];
 
         for (let x = 0; x < columns; x++) {
-            drops[x] = 1;
+            drops[x] = Math.random() * -100;
         }
 
         function draw() {
-            ctx.fillStyle = 'rgba(2, 0, 4, 0.1)';
+            // Полупрозрачный черный для эффекта "шлейфа"
+            ctx.fillStyle = 'rgba(2, 0, 4, 0.15)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = '#00f2ff'; // Цвет летящего кода
+            ctx.fillStyle = '#00f2ff22'; // Очень прозрачный синий неон
             ctx.font = fontSize + 'px "Share Tech Mono"';
 
             for (let i = 0; i < drops.length; i++) {
                 const text = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
-                ctx.fillText(text, i * fontSize * 4, drops[i] * fontSize);
+                
+                // Рандомные координаты для разброса
+                const x = i * (canvas.width / columns);
+                const y = drops[i] * fontSize;
 
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                ctx.fillText(text, x, y);
+
+                if (y > canvas.height && Math.random() > 0.975) {
                     drops[i] = 0;
                 }
-                drops[i]++;
+                drops[i] += 0.5; // Скорость падения
             }
+            requestAnimationFrame(draw);
         }
 
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-
-        setInterval(draw, 50);
+        draw();
     </script>
 </body>
 </html>
